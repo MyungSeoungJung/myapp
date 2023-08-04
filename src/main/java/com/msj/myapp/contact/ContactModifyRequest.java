@@ -1,5 +1,6 @@
 package com.msj.myapp.contact;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

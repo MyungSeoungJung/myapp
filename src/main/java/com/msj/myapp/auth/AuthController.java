@@ -8,11 +8,13 @@ import com.msj.myapp.auth.entity.ProfileRepository;
 import com.msj.myapp.auth.request.SignupRequest;
 import com.msj.myapp.auth.util.HashUtil;
 import com.msj.myapp.auth.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Optional;
 
@@ -107,16 +109,30 @@ public class AuthController {
         Optional<Profile> profile = profileRepo.findByLogin_Id(l.getId());
         // 로그인정보와 프로필 정보가 제대로 연결 안됨.
         if(!profile.isPresent()) {
-            return null;
+            // 409 conflict: 데이터 현재 상태가 안 맞음
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        jwt.createToken(
+        String token = jwt.createToken(
                 l.getId(), l.getUsername(),
                 profile.get().getNickname());
-
+        System.out.println(token);
 
         // 3. cookie와 헤더를 생성한후 리다이렉트
+        Cookie cookie = new Cookie("token", token);
+        cookie.setPath("/");
+        cookie.setMaxAge((int) (jwt.TOKEN_TIMEOUT / 1000L)); // 만료시간
+        cookie.setDomain("localhost"); // 쿠키를 사용할 수 있 도메인
 
-        return ResponseEntity.ok().build();
+        // 응답헤더에 쿠키 추가
+        res.addCookie(cookie);
+
+        // 웹 첫페이지로 리다이렉트
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .location(ServletUriComponentsBuilder
+                        .fromHttpUrl("http://localhost:5500")
+                        .build().toUri())
+                .build();
     }
 }
