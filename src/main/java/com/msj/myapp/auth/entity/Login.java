@@ -1,4 +1,4 @@
-package com.msj.myapp.auth;
+package com.msj.myapp.auth.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class Login {
     private String username;
 
     @Column(length = 500)
-    private String password;
+    private String secret;
 
     // 관계테이블에 키값만 저장
     private long profileId;

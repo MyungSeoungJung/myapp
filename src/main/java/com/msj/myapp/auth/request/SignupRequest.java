@@ -1,4 +1,4 @@
-package com.msj.myapp.auth;
+package com.msj.myapp.auth.request;
 
 
 import jakarta.persistence.Column;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-//Login과 Profile의 필드값이 한 곳에 필요해서
 public class SignupRequest {
     private String username;
     private String password;

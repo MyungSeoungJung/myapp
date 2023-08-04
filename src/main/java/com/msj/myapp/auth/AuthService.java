@@ -1,14 +1,24 @@
 package com.msj.myapp.auth;
 
+
+import com.msj.myapp.auth.entity.Login;
+import com.msj.myapp.auth.entity.LoginRepository;
+import com.msj.myapp.auth.entity.Profile;
+import com.msj.myapp.auth.entity.ProfileRepository;
+import com.msj.myapp.auth.request.SignupRequest;
+import com.msj.myapp.auth.util.HashUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-// 로그인
+
     private LoginRepository repo;
     private ProfileRepository profileRepo;
+
+    @Autowired
+    private HashUtil hash;
 
     @Autowired
     public AuthService(LoginRepository repo, ProfileRepository profileRepo) {
@@ -38,13 +48,11 @@ public class AuthService {
 
     @Transactional
     public long createIdentity(SignupRequest req) {
-        HashUtil util = new HashUtil();
-
         // 1. login 정보를 insert
         Login toSaveLogin =
                 Login.builder()
                         .username(req.getUsername())
-                        .password(util.createHash(req.getPassword()))
+                        .secret(hash.createHash(req.getPassword()))
                         .build();
         Login savedLogin = repo.save(toSaveLogin);
 

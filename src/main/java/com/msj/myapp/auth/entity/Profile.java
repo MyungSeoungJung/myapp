@@ -1,11 +1,11 @@
-package com.msj.myapp.auth;
+package com.msj.myapp.auth.entity;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Check;
 
 @Data
 @NoArgsConstructor
