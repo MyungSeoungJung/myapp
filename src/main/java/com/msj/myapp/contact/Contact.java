@@ -1,9 +1,6 @@
 package com.msj.myapp.contact;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +23,7 @@ import lombok.NoArgsConstructor;
 // JPA(Java Persistent API)
 // : 내부적으로 Hibernate를 이용하여 구현된 interface를 제공
 // : 자바에서 ORM을 처리하는 표준방법
+@IdClass(Contact.class) // pk클래스
 public class Contact {
 
     // @Id: 엔티티의 PK(primary key)를 지정
@@ -33,6 +31,10 @@ public class Contact {
     // PK: 유일성+대표성이 만족이 되어야함.
 
     // PK 컬럼 및 제약조건 설정
+
+//    연락처 소유자 id (프로필 id)
+        private long ownerId;
+
     @Id
     // key
     private String email; // 계정 Id, 인터넷세계의 집주소(불변)
@@ -50,4 +52,6 @@ public class Contact {
     @Column(length = 1024 * 1024 * 20) // MySQL에서는 longtext로 바뀜
     // 파일을 base64 data-url 문자열로 저장
     private String image;
+
+
 }

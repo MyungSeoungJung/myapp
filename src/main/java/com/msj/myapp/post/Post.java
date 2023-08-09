@@ -23,9 +23,11 @@ public class Post {
     private String title;
     @Column(nullable = false)
     private String content;
-
+//    작성자 이름
     private String creatorName;
     private long createdTime;
+//    게시글 작성자 id
+    private long creatorId;
 
     @Column(columnDefinition = "LONGTEXT")
     private String image;

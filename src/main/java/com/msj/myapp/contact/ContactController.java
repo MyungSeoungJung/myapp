@@ -1,5 +1,7 @@
 package com.msj.myapp.contact;
 
+import com.msj.myapp.auth.Auth;
+import com.msj.myapp.auth.AuthProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.FluentQuery;
@@ -153,13 +155,17 @@ public class B {
     }
 
     // HTTP 1.1 POST /contacts
+    
+    @Auth
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addContact(@RequestBody Contact contact) {
+    public ResponseEntity<Map<String, Object>> addContact(
+            @RequestBody Contact contact,
+            @RequestAttribute("authProfile") AuthProfile authProfile) {
         // 클라이언트에서 넘어온 JSON이 객체로 잘 변환됐는지 확인
-        System.out.println(contact.getName());
-        System.out.println(contact.getPhone());
-        System.out.println(contact.getEmail());
-
+//        System.out.println(contact.getName());
+//        System.out.println(contact.getPhone());
+//        System.out.println(contact.getEmail());
+        System.out.println(authProfile);
         // 이메일 필수값 검증
         // 400: bad request
         if(contact.getEmail() == null || contact.getEmail().isEmpty()) {
